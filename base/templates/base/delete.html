@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card p-4">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="mb-3">
+        <p class="lead">Are you sure you want to delete "{{ obj }}"?</p>
+      </div>
+      <div class="d-flex justify-content-between">
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">
+          <svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+          >
+            <title>arrow-left</title>
+            <path
+              d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+            ></path>
+          </svg>
+          Go Back
+        </a>
+        <button type="submit" class="btn btn-danger">
+          <svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <title>trash</title>
+            <path
+              d="M6 8v12h12V8H6zm0-4h12V1H6v3zm13.362 0h2.636V1h-2.636v3z"
+            ></path>
+          </svg>
+          Confirm
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

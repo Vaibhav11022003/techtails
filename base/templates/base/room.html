@@ -1,0 +1,164 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main class="profile-page layout layout--2">
+    <div class="container mt-4">
+        <!-- Room Start -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                    <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 32 32"
+                    >
+                        <title>arrow-left</title>
+                        <path
+                            d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+                        ></path>
+                    </svg>
+                    Back
+                </a>
+                <h3 class="mb-0">Study Room</h3>
+                {% if room.host == request.user %}
+                <div>
+                    <a href="{% url 'update-room' room.id %}" class="btn btn-outline-primary btn-sm mr-2">
+                        <svg
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                        >
+                            <title>edit</title>
+                            <path
+                                d="m23.5 22h-15c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h15c.276 0 .5.224.5.5s-.224.5-.5.5z"
+                            />
+                            <path
+                                d="m2.5 22c-.131 0-.259-.052-.354-.146-.123-.123-.173-.3-.133-.468l1.09-4.625c.021-.09.067-.173.133-.239l14.143-14.143c.565-.566 1.554-.566 2.121 0l2.121 2.121c.283.283.439.66.439 1.061s-.156.778-.439 1.061l-14.142 14.141c-.065.066-.148.112-.239.133l-4.625 1.09c-.038.01-.077.014-.115.014zm1.544-4.873-.872 3.7 3.7-.872 14.042-14.041c.095-.095.146-.22.146-.354 0-.133-.052-.259-.146-.354l-2.121-2.121c-.19-.189-.518-.189-.707 0zm3.081 3.283h.01z"
+                            />
+                            <path
+                                d="m17.889 10.146c-.128 0-.256-.049-.354-.146l-3.535-3.536c-.195-.195-.195-.512 0-.707s.512-.195.707 0l3.536 3.536c.195.195.195.512 0 .707-.098.098-.226.146-.354.146z"
+                            />
+                        </svg>
+                        Edit
+                    </a>
+                    <a href="{% url 'delete-room' room.id %}" class="btn btn-outline-danger btn-sm">
+                        <svg
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 32 32"
+                        >
+                            <title>remove</title>
+                            <path
+                                d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"
+                            ></path>
+                        </svg>
+                        Delete
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{room.name}}</h5>
+                <p class="card-text text-muted">Created {{room.created|timesince}} ago</p>
+                <p class="card-text">
+                    <strong>Hosted By:</strong> 
+                    <a href="{% url 'profile' room.host.id %}" class="d-flex align-items-center">
+                        <img src="{{ room.host.bio.avatar.url }}" alt="" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                        <span>@{{room.host.username}}</span>
+                    </a>
+                </p>
+                <p class="card-text">
+                    <strong>Topic:</strong> {{room.topic.name}}
+                </p>
+                <p class="card-text">{{room.desc}}</p>
+            </div>
+            <div class="card-footer">
+                <!-- Conversation Section -->
+                <div class="mb-3">
+                    {% if request.user.is_authenticated %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea name="body" class="form-control" placeholder="Write your message here..." rows="3" style="resize: none;"></textarea>
+                        </div>
+                        <button class="btn btn-primary mt-2" type="submit">Send</button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="scroll">
+                    {% for message in room_messages %}
+                    <div class="media mb-3">
+                        <img src="{{ message.user.bio.avatar.url }}" alt="" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                        <div class="media-body">
+                            <h6 class="mt-0">
+                                <a href="{% url 'profile' message.user.id %}">@{{message.user.username}}</a>
+                                <small class="text-muted">{{message.created|timesince}} ago</small>
+                                {% if request.user == message.user %}
+                                <a href="{% url 'update-message' message.id %}" class="float-right text-primary mr-2">
+                                    <svg
+                                        version="1.1"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <title>edit</title>
+                                        <path
+                                            d="M16.7 2.3c-.4-.4-1-.4-1.4 0l-2.3 2.3-2.3-2.3c-.4-.4-1-.4-1.4 0l-1.4 1.4c-.4.4-.4 1 0 1.4l2.3 2.3-2.3 2.3c-.4.4-.4 1 0 1.4l1.4 1.4c.4.4 1 .4 1.4 0l2.3-2.3 2.3 2.3c.4.4 1 .4 1.4 0l1.4-1.4c.4-.4.4-1 0-1.4l-2.3-2.3 2.3-2.3c.4-.4.4-1 0-1.4l-1.4-1.4zm-1.4 3.5l-2.3 2.3c-.4.4-1 .4-1.4 0l-1.4-1.4c-.4-.4-.4-1 0-1.4l2.3-2.3 1.4 1.4 2.3-2.3 1.4 1.4-2.3 2.3z"
+                                        />
+                                    </svg>
+                                    Update
+                                </a>
+                                <a href="{% url 'delete-message' message.id %}" class="float-right text-danger">
+                                    <svg
+                                        version="1.1"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 32 32"
+                                    >
+                                        <title>remove</title>
+                                        <path
+                                            d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"
+                                        ></path>
+                                    </svg>
+                                    Delete
+                                </a>
+                                {% endif %}
+                            </h6>
+                            <p>{{message.body}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Room End -->
+
+        <!-- Participants Start -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Participants <span class="badge badge-secondary">({{participants.count}} Joined)</span></h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for user in participants %}
+                <li class="list-group-item d-flex align-items-center">
+                    <img src="{{ user.bio.avatar.url }}" alt="" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                    <a href="{% url 'profile' user.id %}" class="flex-grow-1">
+                        <p class="mb-0">{{user.username}}</p>
+                        <small class="text-muted">@{{user.username}}</small>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Participants End -->
+    </div>
+</main>
+{% endblock %}

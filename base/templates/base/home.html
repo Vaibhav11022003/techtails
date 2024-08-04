@@ -1,0 +1,104 @@
+{% extends 'main.html' %} 
+{% block content %}
+<style>
+/* Main layout background color with gradient */
+.layout {
+  background: linear-gradient(to bottom, #f4f7f9, #ffffff); /* Grey to white gradient */
+}
+
+/* Container styling */
+.container {
+  background-color: #ffffff; /* White background for the content area */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a lifted effect */
+  padding: 20px; /* Padding for spacing */
+}
+
+/* Card component background color */
+.card {
+  background-color: #ffffff; /* White background for cards */
+  border: 1px solid #e1e4e8; /* Light border for subtle separation */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Card header styling */
+.card-header {
+  background-color: #f8f9fa; /* Slightly darker background for headers */
+  border-bottom: 1px solid #e1e4e8; /* Border at the bottom of the header */
+  padding: 15px; /* Padding for spacing */
+}
+
+/* Card footer styling */
+.card-footer {
+  background-color: #f8f9fa; /* Slightly darker background for footers */
+  border-top: 1px solid #e1e4e8; /* Border at the top of the footer */
+  padding: 15px; /* Padding for spacing */
+}
+
+/* List group item background color */
+.list-group-item {
+  background-color: #ffffff; /* White background for list items */
+  border: 1px solid #e1e4e8; /* Light border for subtle separation */
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #007bff; /* Primary color for buttons */
+  border-color: #007bff; /* Border color to match button */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+  border-color: #004085; /* Border color to match hover effect */
+}
+
+/* Badge styling */
+.badge-primary {
+  background-color: #007bff; /* Primary color for badges */
+}
+
+.badge-secondary {
+  background-color: #6c757d; /* Secondary color for badges */
+}
+
+
+</style>
+<main class="layout layout--3">
+  <div class="container">
+    <div class="row">
+      <!-- Topics Start -->
+      <div class="col-md-3">
+        {% include 'base/topics_component.html' %}
+      </div>
+      <!-- Topics End -->
+      
+      <!-- Room List Start -->
+      <div class="col-md-6">
+        <div class="roomList">
+          <div class="roomList__header d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h2>Study Room</h2>
+              <p>{{room_count}} Rooms available</p>
+            </div>
+            <a class="btn btn-primary" href="{% url 'create-room' %}">
+              <svg class="bi bi-plus-circle" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"/>
+                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5H7V4.5a.5.5 0 0 1 1 0V7.5h2.5a.5.5 0 0 1 0 1H8V11.5a.5.5 0 0 1-1 0V8H4.5A.5.5 0 0 1 4 8z"/>
+              </svg>
+              Create Room
+            </a>
+          </div>
+          {% include 'base/feed_component.html' %}
+        </div>
+      </div>
+      <!-- Room List End -->
+      
+      <!-- Activities Start -->
+      <div class="col-md-3">
+        {% include 'base/activity_component.html' %}
+      </div>
+      <!-- Activities End -->
+    </div>
+  </div>
+</main>
+{% endblock %}

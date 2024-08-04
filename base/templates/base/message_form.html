@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <!-- Display Username and Room Name as readonly -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" value="{{ message.user.username }}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="roomname" class="form-label">Room Name</label>
+                    <input type="text" id="roomname" class="form-control" value="{{ message.room.name }}" readonly>
+                </div>
+
+                <!-- Editable Message Body -->
+                <div class="mb-3">
+                    <label for="body" class="form-label">Message Body</label>
+                    <textarea id="body" name="body" class="form-control" rows="3" required style="resize: none;">{{ message.body }}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

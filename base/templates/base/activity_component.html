@@ -1,0 +1,30 @@
+<div class="activities card mb-4 shadow-sm border-0">
+  <div class="card-header bg-light text-dark border-bottom">
+    <h2>Recent Activities</h2>
+  </div>
+  <div class="list-group list-group-flush">
+    {% for message in room_messages %}
+    <div class="list-group-item d-flex justify-content-between align-items-start border-0 py-3">
+      <a href="{% url 'profile' message.user.id %}" class="d-flex align-items-center text-dark text-decoration-none">
+        <div class="avatar mr-2">
+          <img src="{{ message.user.bio.avatar.url }}" alt="" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+        </div>
+        <div>
+          <p class="mb-0">{{ message.user.username }} <small class="text-muted">{{ message.created|timesince }}</small></p>
+        </div>
+      </a>
+      {% if message.user == request.user %}
+      <a href="{% url 'delete-message' message.id %}" class="text-danger">
+        <svg class="bi bi-x-circle" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zM4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+      </a>
+      {% endif %}
+    </div>
+    <div class="list-group-item px-3 py-2">
+      <p class="mt-2 mb-1">Replied to post <a href="{% url 'room' message.room.id %}" class="text-primary">{{ message.room.name }}</a></p>
+      <div>{{ message }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

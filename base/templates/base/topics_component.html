@@ -1,0 +1,19 @@
+<div class="topics card mb-4 shadow-sm border-0">
+  <div class="card-header bg-light text-dark">
+    <h2>Browse Topics</h2>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item bg-white">
+      <a href="{% url 'home' %}" class="d-flex justify-content-between align-items-center text-dark text-decoration-none">
+        All <span class="badge badge-secondary">{{topics.count}}</span>
+      </a>
+    </li>
+    {% for topic in topics %}
+    <li class="list-group-item bg-white">
+      <a href="{% url 'home' %}?q={{topic.name}}" class="d-flex justify-content-between align-items-center text-dark text-decoration-none">
+        {{topic.name}} <span class="badge badge-secondary">{{topic.room_set.all.count}}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
